@@ -4,7 +4,7 @@ import com.permission.common.ApplicationContextHelper;
 import com.permission.common.JsonData;
 import com.permission.dao.SysAclModuleMapper;
 import com.permission.dto.SysAclModule;
-import com.permission.dto.TestVo;
+import com.permission.param.TestVo;
 import com.permission.exception.PermissionException;
 import com.permission.util.BeanValidator;
 import com.permission.util.JsonUtils;

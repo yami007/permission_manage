@@ -1,4 +1,4 @@
-package com.permission.dto;
+package com.permission.param;
 
 import lombok.Getter;
 import lombok.Setter;

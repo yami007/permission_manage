@@ -126,6 +126,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
   <update id="updateByPrimaryKey" parameterType="com.permission.dto.SysDept" >
     update sys_dept
     set name = #{name,jdbcType=VARCHAR},
@@ -138,4 +139,34 @@
       operator_ip = #{operatorIp,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="getAllDept" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_dept
+  </select>
+
+  <select id="getChildDeptListByLevel" resultMap="BaseResultMap" parameterType="string">
+    select
+    <include refid="Base_Column_List" />
+    from sys_dept
+    where lever like #{lever}
+  </select>
+
+  <update id="updataLevel" parameterType="map">
+      UPDATE SYS_DEPT
+      SET lever = #{lever}
+      where id = #{id}
+  </update>
+
+  <select id="countByNmaeAndParentId" resultType="Integer" parameterType="string">
+    SELECT count(1)
+    from sys_dept
+    where parent_id = #{parentId}
+    and name = #{name}
+    <if test="id !=null">
+      and id != #{id}
+    </if>
+  </select>
+
 </mapper>
