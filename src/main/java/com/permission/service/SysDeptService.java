@@ -74,7 +74,7 @@ public class SysDeptService {
         String afterLever = after.getLever();
         if (!afterLever.equals(beforLever)) {
             // 获取所有的子部门，包括子部门的子部门
-            List<SysDept> childDepts = sysDeptMapper.getChildDeptListByLevel(beforLever+".%");
+            List<SysDept> childDepts = sysDeptMapper.getChildDeptListByLevel(beforLever);
             if (CollectionUtils.isNotEmpty(childDepts)) {
                 for (SysDept childDept : childDepts) {
                     String lever = childDept.getLever();
