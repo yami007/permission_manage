@@ -10,7 +10,10 @@
     <context:component-scan base-package="com.permission.service"/>
     <!-- 默认的注解映射的支持 -->
     <mvc:annotation-driven/>
+
     <bean class="com.permission.common.SpringExceptionResolver"/>
+
+    <bean class="com.permission.common.ApplicationContextHelper" lazy-init="false"/>
 
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
 
