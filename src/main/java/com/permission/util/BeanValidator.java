@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.permission.exception.ParamException;
+import org.apache.commons.collections.MapUtils;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -57,9 +58,14 @@ public class BeanValidator {
         }
     }
 
+    /**
+     * 校验方法，不通过就抛出异常
+     * @param param
+     * @throws ParamException
+     */
     public static void check(Object param) throws ParamException{
         Map<String,String> map = BeanValidator.validateObject(param);
-        if(map!=null&&map.entrySet().size()>0){
+        if(MapUtils.isNotEmpty(map)){
             throw new ParamException(map.toString());
         }
     }

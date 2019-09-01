@@ -8,8 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
-
 @RestController
 @Slf4j
 public class TestController {
@@ -22,16 +20,7 @@ public class TestController {
     @RequestMapping("/validateTest")
     public JsonData validateTest(TestVo vo) {
         log.info("validate");
-        try {
-            Map<String, String> map = BeanValidator.validateObject(vo);
-            if (map != null && map.entrySet().size() > 0) {
-                for (Map.Entry<String, String> entry : map.entrySet()) {
-                    log.info("{}->{}", entry.getKey(), entry.getValue());
-                }
-            }
-        } catch (Exception e) {
-
-        }
+        BeanValidator.check(vo);
         return new JsonData().success("test,validate");
     }
 }

@@ -1,5 +1,6 @@
 package com.permission.common;
 
+import com.permission.exception.ParamException;
 import com.permission.exception.PermissionException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerExceptionResolver;
@@ -17,7 +18,7 @@ public class SpringExceptionResolver implements HandlerExceptionResolver {
         String defauleMsg = "System error";
         // 要求项目中所有的请求json都使用.json结尾
         if (url.endsWith(".json")) {
-            if (ex instanceof PermissionException) {
+            if (ex instanceof PermissionException || ex instanceof ParamException) {
                 log.error("unknow jsonexception ,url:" + url, ex);
                 JsonData jsonData = JsonData.fail(ex.getMessage());
                 modelAndView = new ModelAndView("jsonView", jsonData.toMap());
