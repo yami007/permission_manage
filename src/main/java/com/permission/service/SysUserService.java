@@ -1,6 +1,8 @@
 package com.permission.service;
 
 import com.google.common.base.Preconditions;
+import com.permission.beans.PageQuery;
+import com.permission.beans.PageResult;
 import com.permission.dao.SysUserMapper;
 import com.permission.dto.SysUser;
 import com.permission.exception.ParamException;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class SysUserService {
@@ -71,6 +74,16 @@ public class SysUserService {
     }
     public SysUser findByKeyword(String keyword) {
         return sysUserMapper.findByKeyword(keyword);
+    }
+
+    public PageResult<SysUser> getPageByDeptId(int deptId, PageQuery page) {
+        BeanValidator.check(page);
+        int count = sysUserMapper.countByDeptId(deptId);
+        if (count > 0) {
+            List<SysUser> list = sysUserMapper.getPageByDeptId(deptId, page);
+            return PageResult.<SysUser>builder().total(count).data(list).build();
+        }
+        return PageResult.<SysUser>builder().build();
     }
 
 }

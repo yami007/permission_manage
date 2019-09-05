@@ -1,11 +1,15 @@
 package com.permission.controller;
 
+import com.permission.beans.PageQuery;
+import com.permission.beans.PageResult;
 import com.permission.common.JsonData;
+import com.permission.dto.SysUser;
 import com.permission.param.UserParam;
 import com.permission.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -26,5 +30,11 @@ public class SysUserController {
     public JsonData updateUser(UserParam param) {
         sysUserService.update(param);
         return JsonData.success();
+    }
+    @RequestMapping("/page.json")
+    @ResponseBody
+    public JsonData page(@RequestParam("deptId") int deptId, PageQuery pageQuery) {
+        PageResult<SysUser> result = sysUserService.getPageByDeptId(deptId, pageQuery);
+        return JsonData.success(result);
     }
 }
