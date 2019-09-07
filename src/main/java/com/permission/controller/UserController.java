@@ -13,16 +13,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * 登录及登出操作controller
+ */
 @Controller
 public class UserController {
     @Autowired
     private SysUserService sysUserService;
 
+    /**
+     * 登录
+     * @param request
+     * @param response
+     * @throws IOException
+     * @throws ServletException
+     */
     @RequestMapping("/login.page")
     public void login(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-
+        //通过登录名（手机号及邮箱号）查询用户
         SysUser sysUser = sysUserService.findByKeyword(username);
         String errorMsg = "";
         String ret = request.getParameter("ret");
@@ -38,7 +48,7 @@ public class UserController {
         } else if (sysUser.getStatus() != 1) {
             errorMsg = "用户已被冻结，请联系管理员";
         } else {
-            // login success
+            // 登录成功，重定向到首页
             request.getSession().setAttribute("user", sysUser);
             if (StringUtils.isNotBlank(ret)) {
                 response.sendRedirect(ret);
@@ -54,10 +64,18 @@ public class UserController {
         if (StringUtils.isNotBlank(ret)) {
             request.setAttribute("ret", ret);
         }
+        // 登录失败，请求转发到登录页面
         String path = "signin.jsp";
         request.getRequestDispatcher(path).forward(request, response);
     }
 
+    /**
+     * 登出
+     * @param request
+     * @param response
+     * @throws IOException
+     * @throws ServletException
+     */
     @RequestMapping("/logout.page")
     public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         request.getSession().invalidate();

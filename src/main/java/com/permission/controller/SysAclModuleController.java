@@ -1,9 +1,8 @@
 package com.permission.controller;
 
 import com.permission.common.JsonData;
-import com.permission.dto.DeptLevelDto;
-import com.permission.param.DeptParam;
-import com.permission.service.SysDeptService;
+import com.permission.param.AclModuleParam;
+import com.permission.service.SysAclModuleService;
 import com.permission.service.SysTreeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,50 +12,45 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
-
-/**
- * 部门controller
- */
 @Controller
-@RequestMapping("/sys/dept")
+@RequestMapping("/sys/aclModule")
 @Slf4j
-public class SysDeptController {
-    @Autowired
-    private SysDeptService sysDeptService;
+public class SysAclModuleController {
 
+    @Autowired
+    private SysAclModuleService sysAclModuleService;
     @Autowired
     private SysTreeService sysTreeService;
 
-    @RequestMapping("/dept.page")
+    @RequestMapping("/acl.page")
     public ModelAndView page() {
-        return new ModelAndView("dept");
+        return new ModelAndView("acl");
     }
+
     @RequestMapping("/save.json")
     @ResponseBody
-    public JsonData saveDept(DeptParam deptParam) {
-        sysDeptService.saveDept(deptParam);
+    public JsonData saveAclModule(AclModuleParam param) {
+        sysAclModuleService.save(param);
+        return JsonData.success();
+    }
+
+    @RequestMapping("/update.json")
+    @ResponseBody
+    public JsonData updateAclModule(AclModuleParam param) {
+        sysAclModuleService.update(param);
         return JsonData.success();
     }
 
     @RequestMapping("/tree.json")
     @ResponseBody
     public JsonData tree() {
-        List<DeptLevelDto> deptLevelDtos = sysTreeService.deptTree();
-        return JsonData.success(deptLevelDtos);
-    }
-
-    @RequestMapping("/updateDept.json")
-    @ResponseBody
-    public JsonData updateDept(DeptParam deptParam) {
-        sysDeptService.update(deptParam);
-        return JsonData.success();
+        return JsonData.success(sysTreeService.aclModuleTree());
     }
 
     @RequestMapping("/delete.json")
     @ResponseBody
     public JsonData delete(@RequestParam("id") int id) {
-        sysDeptService.delete(id);
+        sysAclModuleService.delete(id);
         return JsonData.success();
     }
 }

@@ -18,6 +18,9 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 用户业务类
+ */
 @Service
 public class SysUserService {
 

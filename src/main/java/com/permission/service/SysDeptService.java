@@ -18,6 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 部门业务类
+ * @author YAMI
+ *
+ */
 @Service
 public class SysDeptService {
     @Autowired
