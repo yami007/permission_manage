@@ -25,4 +25,6 @@ public interface SysDeptMapper {
     void updataLevel(SysDept sysDept);
 
     Integer countByNmaeAndParentId(@Param("parentId") Integer parentId, @Param("name")String name, @Param("id") Integer deptId);
+
+    int countByParentId(@Param("deptId") int deptId);
 }

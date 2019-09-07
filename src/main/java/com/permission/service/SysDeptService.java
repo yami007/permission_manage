@@ -1,11 +1,14 @@
 package com.permission.service;
 
 import com.google.common.base.Preconditions;
+import com.permission.common.RequestHolder;
 import com.permission.dao.SysDeptMapper;
+import com.permission.dao.SysUserMapper;
 import com.permission.dto.SysDept;
 import com.permission.exception.ParamException;
 import com.permission.param.DeptParam;
 import com.permission.util.BeanValidator;
+import com.permission.util.IpUtil;
 import com.permission.util.LeverUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,8 @@ import java.util.List;
 public class SysDeptService {
     @Autowired
     private SysDeptMapper sysDeptMapper;
+    @Autowired
+    private SysUserMapper sysUserMapper;
 
     /**
      * 保存部门
@@ -33,8 +38,8 @@ public class SysDeptService {
         SysDept sysDept = SysDept.builder().name(param.getName()).parentId(param.getParentId())
                 .seq(param.getSeq()).remark(param.getRemark()).build();
         sysDept.setLever(LeverUtil.calculateLever(getLever(param.getParentId()), param.getParentId()));
-        sysDept.setOperator("system");
-        sysDept.setOperatorIp("127.0.0.1");
+        sysDept.setOperator(RequestHolder.getCurrentUser().getUsername());
+        sysDept.setOperatorIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         sysDept.setOperatorTime(new Date());
         sysDeptMapper.insertSelective(sysDept);
     }
@@ -55,8 +60,8 @@ public class SysDeptService {
         SysDept afterSysDept = SysDept.builder().id(param.getId()).name(param.getName()).parentId(param.getParentId())
                 .seq(param.getSeq()).remark(param.getRemark()).build();
         afterSysDept.setLever(LeverUtil.calculateLever(getLever(param.getParentId()), param.getParentId()));
-        afterSysDept.setOperator("system");
-        afterSysDept.setOperatorIp("127.0.0.1");
+        afterSysDept.setOperator(RequestHolder.getCurrentUser().getUsername());
+        afterSysDept.setOperatorIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         afterSysDept.setOperatorTime(new Date());
         // 更新本部门及其子部门
         updateWithChild(beforeSysDept, afterSysDept);
@@ -109,6 +114,17 @@ public class SysDeptService {
             return sysDept.getLever();
         }
 
+    }
+    public void delete(int deptId) {
+        SysDept dept = sysDeptMapper.selectByPrimaryKey(deptId);
+        Preconditions.checkNotNull(dept, "待删除的部门不存在，无法删除");
+        if (sysDeptMapper.countByParentId(dept.getId()) > 0) {
+            throw new ParamException("当前部门下面有子部门，无法删除");
+        }
+        if(sysUserMapper.countByDeptId(dept.getId()) > 0) {
+            throw new ParamException("当前部门下面有用户，无法删除");
+        }
+        sysDeptMapper.deleteByPrimaryKey(deptId);
     }
 
 }
