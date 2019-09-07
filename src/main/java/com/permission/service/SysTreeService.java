@@ -1,7 +1,6 @@
 package com.permission.service;
 
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.permission.dao.SysAclModuleMapper;
 import com.permission.dao.SysDeptMapper;
@@ -14,10 +13,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * 递归树业务类
@@ -91,44 +87,53 @@ public class SysTreeService {
     // 查询出所有的权限模块
     public List<AclModuleLevelDto> aclModuleTree() {
         List<SysAclModule> aclModuleList = sysAclModuleMapper.getAllAclModule();
-        List<AclModuleLevelDto> dtoList = Lists.newArrayList();
-        for (SysAclModule aclModule : aclModuleList) {
-            dtoList.add(AclModuleLevelDto.adapt(aclModule));
+        if (CollectionUtils.isEmpty(aclModuleList)) {
+            return new ArrayList<>();
+        } else {
+            List<AclModuleLevelDto> aclModuleLevelDtos = new ArrayList<>();
+            for (SysAclModule sysAclModule : aclModuleList) {
+                AclModuleLevelDto dto = AclModuleLevelDto.adapt(sysAclModule);
+                aclModuleLevelDtos.add(dto);
+            }
+            List<AclModuleLevelDto> aclModuleLevelDtoList = aclModuleListToTree(aclModuleLevelDtos);
+            return aclModuleLevelDtoList;
         }
-        return aclModuleListToTree(dtoList);
     }
 
     // 将dtoList转换成树
     public List<AclModuleLevelDto> aclModuleListToTree(List<AclModuleLevelDto> dtoList) {
         if (CollectionUtils.isEmpty(dtoList)) {
-            return Lists.newArrayList();
-        }
-        // level -> [aclmodule1, aclmodule2, ...] Map<String, List<Object>>
-        Multimap<String, AclModuleLevelDto> levelAclModuleMap = ArrayListMultimap.create();
-        List<AclModuleLevelDto> rootList = Lists.newArrayList();
-
-        for (AclModuleLevelDto dto : dtoList) {
-            levelAclModuleMap.put(dto.getLever(), dto);
-            if (LeverUtil.ROOT.equals(dto.getLever())) {
-                rootList.add(dto);
+            return new ArrayList<>();
+        } else {
+            List<AclModuleLevelDto> aclModuleLevelDtoList = new ArrayList<>();
+            Multimap<String, AclModuleLevelDto> levelDeptMap = ArrayListMultimap.create();
+            for (AclModuleLevelDto dto : dtoList) {
+                levelDeptMap.put(dto.getLever(), dto);
+                if (LeverUtil.ROOT.equals(dto.getLever())) {
+                    aclModuleLevelDtoList.add(dto);
+                }
             }
+            aclModuleLevelDtoList.sort(aclModuleSeqComparator);
+            transformAclModuleTree(aclModuleLevelDtoList, LeverUtil.ROOT, levelDeptMap);
+            return aclModuleLevelDtoList;
         }
-        Collections.sort(rootList, aclModuleSeqComparator);
-        // 递归生成树
-        transformAclModuleTree(rootList, LeverUtil.ROOT, levelAclModuleMap);
-        return rootList;
     }
 
     // 递归转换
     public void transformAclModuleTree(List<AclModuleLevelDto> dtoList, String level, Multimap<String, AclModuleLevelDto> levelAclModuleMap) {
-        for (int i = 0; i < dtoList.size(); i++) {
-            AclModuleLevelDto dto = dtoList.get(i);
-            String nextLevel = LeverUtil.calculateLever(level, dto.getId());
-            List<AclModuleLevelDto> tempList = (List<AclModuleLevelDto>) levelAclModuleMap.get(nextLevel);
-            if (CollectionUtils.isNotEmpty(tempList)) {
-                Collections.sort(tempList, aclModuleSeqComparator);
-                dto.setAclModuleList(tempList);
-                transformAclModuleTree(tempList, nextLevel, levelAclModuleMap);
+        if (CollectionUtils.isNotEmpty(dtoList)) {
+            for (AclModuleLevelDto aclModuleLevelDto : dtoList) {
+                Integer parentId = aclModuleLevelDto.getId();
+                // 通过父类的等级及id获取子类的等级
+                String childLever = LeverUtil.calculateLever(level, parentId);
+                // 通过子的等级，从map中获取子集合
+                List<AclModuleLevelDto> childAclModuleLevelDtos = (List<AclModuleLevelDto>) levelAclModuleMap.get(childLever);
+                // 如果包含子集合，就set进父权限中，并排序，再递归转换
+                if (CollectionUtils.isNotEmpty(childAclModuleLevelDtos)) {
+                    aclModuleLevelDto.setAclModuleList(childAclModuleLevelDtos);
+                    childAclModuleLevelDtos.sort(aclModuleSeqComparator);
+                    transformAclModuleTree(childAclModuleLevelDtos, childLever, levelAclModuleMap);
+                }
             }
         }
     }

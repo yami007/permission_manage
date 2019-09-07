@@ -150,7 +150,7 @@
     select
     <include refid="Base_Column_List" />
     from sys_dept
-    where lever like '${lever}.%'
+    where lever = #{lever}
   </select>
 
   <update id="updataLevel" parameterType="map">

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -74,16 +75,18 @@ public class SysAclModuleService {
         String newLevelPrefix = after.getLever();
         String oldLevelPrefix = before.getLever();
         if (!after.getLever().equals(before.getLever())) {
-            List<SysAclModule> aclModuleList = sysAclModuleMapper.getChildAclModuleListByLevel(before.getLever());
+            List<SysAclModule> aclModuleList = new ArrayList<>();
+            getChildAclModuleListByLevel(oldLevelPrefix, before.getId(), aclModuleList);
             if (CollectionUtils.isNotEmpty(aclModuleList)) {
                 for (SysAclModule aclModule : aclModuleList) {
                     String lever = aclModule.getLever();
                     if (lever.indexOf(oldLevelPrefix) == 0) {
                         lever = newLevelPrefix + lever.substring(oldLevelPrefix.length());
                         aclModule.setLever(lever);
+                        sysAclModuleMapper.updateLevel(aclModule);
                     }
                 }
-                sysAclModuleMapper.batchUpdateLevel(aclModuleList);
+
             }
         }
         sysAclModuleMapper.updateByPrimaryKeySelective(after);
@@ -111,6 +114,24 @@ public class SysAclModuleService {
             throw new ParamException("当前模块下面有用户，无法删除");
         }*/
         sysAclModuleMapper.deleteByPrimaryKey(aclModuleId);
+    }
+
+    /**
+     * 根据等级和id查询子权限模块
+     *
+     * @param lever
+     * @param id
+     * @return
+     */
+    public void getChildAclModuleListByLevel(String lever, Integer id, List<SysAclModule> aclModuleList) {
+        String childLever = lever + "." + id;
+        List<SysAclModule> sysAclModuleList = sysAclModuleMapper.getChildAclModuleListByLevel(childLever);
+        if (CollectionUtils.isNotEmpty(sysAclModuleList)) {
+            aclModuleList.addAll(sysAclModuleList);
+            for (SysAclModule sysAclModule : sysAclModuleList) {
+                getChildAclModuleListByLevel(sysAclModule.getLever(), sysAclModule.getId(), aclModuleList);
+            }
+        }
     }
 
 }

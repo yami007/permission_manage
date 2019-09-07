@@ -15,13 +15,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
  * 部门业务类
- * @author YAMI
  *
+ * @author YAMI
  */
 @Service
 public class SysDeptService {
@@ -84,7 +85,8 @@ public class SysDeptService {
         String afterLever = after.getLever();
         if (!afterLever.equals(beforLever)) {
             // 获取所有的子部门，包括子部门的子部门
-            List<SysDept> childDepts = sysDeptMapper.getChildDeptListByLevel(beforLever);
+            List<SysDept> childDepts = new ArrayList<>();
+            getChildDeptListByLevel(beforLever, befor.getId(),childDepts);
             if (CollectionUtils.isNotEmpty(childDepts)) {
                 for (SysDept childDept : childDepts) {
                     String lever = childDept.getLever();
@@ -120,16 +122,36 @@ public class SysDeptService {
         }
 
     }
+
     public void delete(int deptId) {
         SysDept dept = sysDeptMapper.selectByPrimaryKey(deptId);
         Preconditions.checkNotNull(dept, "待删除的部门不存在，无法删除");
         if (sysDeptMapper.countByParentId(dept.getId()) > 0) {
             throw new ParamException("当前部门下面有子部门，无法删除");
         }
-        if(sysUserMapper.countByDeptId(dept.getId()) > 0) {
+        if (sysUserMapper.countByDeptId(dept.getId()) > 0) {
             throw new ParamException("当前部门下面有用户，无法删除");
         }
         sysDeptMapper.deleteByPrimaryKey(deptId);
+    }
+
+    /**
+     * 根据等级和id查询子部门
+     *
+     * @param lever
+     * @param id
+     * @return
+     */
+    public void getChildDeptListByLevel(String lever, Integer id,List<SysDept> sysDeptList) {
+        String childLever = lever + "." + id;
+
+        List<SysDept> childDeptListByLevel = sysDeptMapper.getChildDeptListByLevel(childLever);
+        if (CollectionUtils.isNotEmpty(childDeptListByLevel)) {
+            sysDeptList.addAll(childDeptListByLevel);
+            for (SysDept sysDept : childDeptListByLevel) {
+                getChildDeptListByLevel(sysDept.getLever(), sysDept.getId(),sysDeptList);
+            }
+        }
     }
 
 }

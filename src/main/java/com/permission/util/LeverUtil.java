@@ -8,6 +8,8 @@ public class LeverUtil {
     public final static String ROOT = "0";
 
     /**
+     * 获取子的等级
+     * 子的等级为：父的等级+父的id
      * 0
      * 0.1
      * 0.1.2

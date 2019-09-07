@@ -46,7 +46,7 @@ public class SysDeptController {
         return JsonData.success(deptLevelDtos);
     }
 
-    @RequestMapping("/updateDept.json")
+    @RequestMapping("/update.json")
     @ResponseBody
     public JsonData updateDept(DeptParam deptParam) {
         sysDeptService.update(deptParam);

@@ -153,15 +153,13 @@
     select
     <include refid="Base_Column_List" />
     from sys_acl_module
-    WHERE level like #{level} || '.%'
+    WHERE lever = #{lever}
   </select>
 
-  <update id="batchUpdateLevel" parameterType="map">
-    <foreach collection="sysAclModuleList" item="sysAclModule" separator=";">
+  <update id="updateLevel" parameterType="map">
       UPDATE sys_acl_module
-      SET level = #{sysAclModule.level}
+      SET lever = #{sysAclModule.lever}
       WHERE id = #{sysAclModule.id}
-    </foreach>
   </update>
 
   <select id="countByNameAndParentId" parameterType="map" resultType="int">

@@ -20,9 +20,9 @@ public interface SysAclModuleMapper {
 
     int countByNameAndParentId(@Param("parentId") Integer parentId, @Param("name") String name, @Param("id") Integer id);
 
-    List<SysAclModule> getChildAclModuleListByLevel(@Param("level") String level);
+    List<SysAclModule> getChildAclModuleListByLevel(@Param("lever") String lever);
 
-    void batchUpdateLevel(@Param("sysAclModuleList") List<SysAclModule> sysAclModuleList);
+    void updateLevel(@Param("sysAclModule") SysAclModule sysAclModule);
 
     List<SysAclModule> getAllAclModule();
 
