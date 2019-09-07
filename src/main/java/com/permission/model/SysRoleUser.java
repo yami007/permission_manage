@@ -1,13 +1,13 @@
-package com.permission.dto;
+package com.permission.model;
 
 import java.util.Date;
 
-public class SysRoleAcl {
+public class SysRoleUser {
     private Integer id;
 
     private Integer roleId;
 
-    private Integer aclId;
+    private Integer userId;
 
     private String operator;
 
@@ -31,12 +31,12 @@ public class SysRoleAcl {
         this.roleId = roleId;
     }
 
-    public Integer getAclId() {
-        return aclId;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setAclId(Integer aclId) {
-        this.aclId = aclId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getOperator() {

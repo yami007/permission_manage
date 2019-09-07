@@ -1,6 +1,6 @@
 package com.permission.common;
 
-import com.permission.dto.SysUser;
+import com.permission.model.SysUser;
 
 import javax.servlet.http.HttpServletRequest;
 

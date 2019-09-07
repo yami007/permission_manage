@@ -7,7 +7,7 @@ import com.permission.beans.PageQuery;
 import com.permission.beans.PageResult;
 import com.permission.common.RequestHolder;
 import com.permission.dao.SysAclMapper;
-import com.permission.dto.SysAcl;
+import com.permission.model.SysAcl;
 import com.permission.param.AclParam;
 import com.permission.util.BeanValidator;
 import org.springframework.beans.factory.annotation.Autowired;

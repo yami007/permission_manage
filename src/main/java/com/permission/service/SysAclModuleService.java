@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import com.permission.common.RequestHolder;
 import com.permission.dao.SysAclMapper;
 import com.permission.dao.SysAclModuleMapper;
-import com.permission.dto.SysAclModule;
+import com.permission.model.SysAclModule;
 import com.permission.exception.ParamException;
 import com.permission.param.AclModuleParam;
 import com.permission.util.BeanValidator;

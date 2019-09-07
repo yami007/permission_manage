@@ -1,5 +1,6 @@
 package com.permission.dto;
 
+import com.permission.model.SysDept;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

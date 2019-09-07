@@ -5,7 +5,7 @@ import com.permission.beans.PageQuery;
 import com.permission.beans.PageResult;
 import com.permission.common.RequestHolder;
 import com.permission.dao.SysUserMapper;
-import com.permission.dto.SysUser;
+import com.permission.model.SysUser;
 import com.permission.exception.ParamException;
 import com.permission.param.UserParam;
 import com.permission.util.BeanValidator;

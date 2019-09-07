@@ -1,4 +1,4 @@
-package com.permission.dto;
+package com.permission.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,22 +11,18 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class SysAcl {
+public class SysAclModule {
     private Integer id;
-
-    private String code;
 
     private String name;
 
-    private Integer aclModuleId;
+    private Integer parentId;
 
-    private String url;
-
-    private Integer type;
-
-    private Integer status;
+    private String lever;
 
     private Integer seq;
+
+    private Integer status;
 
     private String remark;
 
@@ -44,14 +40,6 @@ public class SysAcl {
         this.id = id;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code == null ? null : code.trim();
-    }
-
     public String getName() {
         return name;
     }
@@ -60,36 +48,20 @@ public class SysAcl {
         this.name = name == null ? null : name.trim();
     }
 
-    public Integer getAclModuleId() {
-        return aclModuleId;
+    public Integer getParentId() {
+        return parentId;
     }
 
-    public void setAclModuleId(Integer aclModuleId) {
-        this.aclModuleId = aclModuleId;
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
     }
 
-    public String getUrl() {
-        return url;
+    public String getLever() {
+        return lever;
     }
 
-    public void setUrl(String url) {
-        this.url = url == null ? null : url.trim();
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setLever(String lever) {
+        this.lever = lever == null ? null : lever.trim();
     }
 
     public Integer getSeq() {
@@ -98,6 +70,14 @@ public class SysAcl {
 
     public void setSeq(Integer seq) {
         this.seq = seq;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public String getRemark() {

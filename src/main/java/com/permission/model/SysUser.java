@@ -1,4 +1,4 @@
-package com.permission.dto;
+package com.permission.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,24 +11,27 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class SysDept {
-    //部门id
+public class SysUser {
     private Integer id;
-    //部门名称
-    private String name;
-    //上级部门ID
-    private Integer parentId;
-    //部门层级
-    private String lever;
-    //部门在当前层级下的顺序，由小到大
-    private Integer seq;
-    //备注
+
+    private String username;
+
+    private String telephone;
+
+    private String mail;
+
+    private String password;
+
+    private Integer deptId;
+
+    private Integer status;
+
     private String remark;
-    //操作者
+
     private String operator;
-    //操作时间
+
     private Date operatorTime;
-    //最后一次操作者的ip
+
     private String operatorIp;
 
     public Integer getId() {
@@ -39,36 +42,52 @@ public class SysDept {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setUsername(String username) {
+        this.username = username == null ? null : username.trim();
     }
 
-    public Integer getParentId() {
-        return parentId;
+    public String getTelephone() {
+        return telephone;
     }
 
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
+    public void setTelephone(String telephone) {
+        this.telephone = telephone == null ? null : telephone.trim();
     }
 
-    public String getLever() {
-        return lever;
+    public String getMail() {
+        return mail;
     }
 
-    public void setLever(String lever) {
-        this.lever = lever == null ? null : lever.trim();
+    public void setMail(String mail) {
+        this.mail = mail == null ? null : mail.trim();
     }
 
-    public Integer getSeq() {
-        return seq;
+    public String getPassword() {
+        return password;
     }
 
-    public void setSeq(Integer seq) {
-        this.seq = seq;
+    public void setPassword(String password) {
+        this.password = password == null ? null : password.trim();
+    }
+
+    public Integer getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Integer deptId) {
+        this.deptId = deptId;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public String getRemark() {

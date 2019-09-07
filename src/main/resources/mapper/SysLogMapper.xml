@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.permission.dao.SysLogMapper" >
-  <resultMap id="BaseResultMap" type="com.permission.dto.SysLog" >
+  <resultMap id="BaseResultMap" type="com.permission.model.SysLog" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="target_id" property="targetId" jdbcType="INTEGER" />
@@ -10,7 +10,7 @@
     <result column="operator_ip" property="operatorIp" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="INTEGER" />
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.permission.dto.SysLogWithBLOBs" extends="BaseResultMap" >
+  <resultMap id="ResultMapWithBLOBs" type="com.permission.model.SysLogWithBLOBs" extends="BaseResultMap" >
     <result column="old_value" property="oldValue" jdbcType="LONGVARCHAR" />
     <result column="new_value" property="newValue" jdbcType="LONGVARCHAR" />
   </resultMap>
@@ -32,7 +32,7 @@
     delete from sys_log
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.permission.dto.SysLogWithBLOBs" >
+  <insert id="insert" parameterType="com.permission.model.SysLogWithBLOBs" >
     insert into sys_log (id, type, target_id, 
       operator, operator_time, operator_ip, 
       status, old_value, new_value
@@ -42,7 +42,7 @@
       #{status,jdbcType=INTEGER}, #{oldValue,jdbcType=LONGVARCHAR}, #{newValue,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.permission.dto.SysLogWithBLOBs" >
+  <insert id="insertSelective" parameterType="com.permission.model.SysLogWithBLOBs" >
     insert into sys_log
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -103,7 +103,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.permission.dto.SysLogWithBLOBs" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.permission.model.SysLogWithBLOBs" >
     update sys_log
     <set >
       <if test="type != null" >
@@ -133,7 +133,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.permission.dto.SysLogWithBLOBs" >
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.permission.model.SysLogWithBLOBs" >
     update sys_log
     set type = #{type,jdbcType=INTEGER},
       target_id = #{targetId,jdbcType=INTEGER},
@@ -145,7 +145,7 @@
       new_value = #{newValue,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.permission.dto.SysLog" >
+  <update id="updateByPrimaryKey" parameterType="com.permission.model.SysLog" >
     update sys_log
     set type = #{type,jdbcType=INTEGER},
       target_id = #{targetId,jdbcType=INTEGER},

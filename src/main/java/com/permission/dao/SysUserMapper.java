@@ -1,7 +1,7 @@
 package com.permission.dao;
 
 import com.permission.beans.PageQuery;
-import com.permission.dto.SysUser;
+import com.permission.model.SysUser;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.permission.dao;
 
-import com.permission.dto.SysAclModule;
+import com.permission.model.SysAclModule;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

@@ -3,7 +3,7 @@ package com.permission.controller;
 import com.permission.beans.PageQuery;
 import com.permission.beans.PageResult;
 import com.permission.common.JsonData;
-import com.permission.dto.SysUser;
+import com.permission.model.SysUser;
 import com.permission.param.UserParam;
 import com.permission.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;

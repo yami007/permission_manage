@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import com.permission.common.RequestHolder;
 import com.permission.dao.SysDeptMapper;
 import com.permission.dao.SysUserMapper;
-import com.permission.dto.SysDept;
+import com.permission.model.SysDept;
 import com.permission.exception.ParamException;
 import com.permission.param.DeptParam;
 import com.permission.util.BeanValidator;

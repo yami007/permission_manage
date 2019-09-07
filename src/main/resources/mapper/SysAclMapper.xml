@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.permission.dao.SysAclMapper" >
-  <resultMap id="BaseResultMap" type="com.permission.dto.SysAcl" >
+  <resultMap id="BaseResultMap" type="com.permission.model.SysAcl" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="code" property="code" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -29,7 +29,7 @@
     delete from sys_acl
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.permission.dto.SysAcl" >
+  <insert id="insert" parameterType="com.permission.model.SysAcl" >
     insert into sys_acl (id, code, name, 
       acl_module_id, url, type, 
       status, seq, remark, 
@@ -41,7 +41,7 @@
       #{operator,jdbcType=VARCHAR}, #{operatorTime,jdbcType=TIMESTAMP}, #{operatorIp,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.permission.dto.SysAcl" >
+  <insert id="insertSelective" parameterType="com.permission.model.SysAcl" >
     insert into sys_acl
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -120,7 +120,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.permission.dto.SysAcl" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.permission.model.SysAcl" >
     update sys_acl
     <set >
       <if test="code != null" >
@@ -159,7 +159,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.permission.dto.SysAcl" >
+  <update id="updateByPrimaryKey" parameterType="com.permission.model.SysAcl" >
     update sys_acl
     set code = #{code,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.permission.dao.SysRoleMapper" >
-  <resultMap id="BaseResultMap" type="com.permission.dto.SysRole" >
+  <resultMap id="BaseResultMap" type="com.permission.model.SysRole" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="INTEGER" />
@@ -24,7 +24,7 @@
     delete from sys_role
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.permission.dto.SysRole" >
+  <insert id="insert" parameterType="com.permission.model.SysRole" >
     insert into sys_role (id, name, type, 
       status, remark, operator, 
       operator_time, operator_ip)
@@ -32,7 +32,7 @@
       #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, 
       #{operatorTime,jdbcType=TIMESTAMP}, #{operatorIp,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.permission.dto.SysRole" >
+  <insert id="insertSelective" parameterType="com.permission.model.SysRole" >
     insert into sys_role
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -87,7 +87,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.permission.dto.SysRole" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.permission.model.SysRole" >
     update sys_role
     <set >
       <if test="name != null" >
@@ -114,7 +114,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.permission.dto.SysRole" >
+  <update id="updateByPrimaryKey" parameterType="com.permission.model.SysRole" >
     update sys_role
     set name = #{name,jdbcType=VARCHAR},
       type = #{type,jdbcType=INTEGER},

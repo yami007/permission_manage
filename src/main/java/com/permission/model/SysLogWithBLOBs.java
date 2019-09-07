@@ -1,4 +1,4 @@
-package com.permission.dto;
+package com.permission.model;
 
 public class SysLogWithBLOBs extends SysLog {
     private String oldValue;

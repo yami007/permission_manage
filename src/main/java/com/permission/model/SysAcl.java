@@ -1,4 +1,4 @@
-package com.permission.dto;
+package com.permission.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,18 +11,22 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class SysAclModule {
+public class SysAcl {
     private Integer id;
+
+    private String code;
 
     private String name;
 
-    private Integer parentId;
+    private Integer aclModuleId;
 
-    private String lever;
+    private String url;
 
-    private Integer seq;
+    private Integer type;
 
     private Integer status;
+
+    private Integer seq;
 
     private String remark;
 
@@ -40,6 +44,14 @@ public class SysAclModule {
         this.id = id;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code == null ? null : code.trim();
+    }
+
     public String getName() {
         return name;
     }
@@ -48,28 +60,28 @@ public class SysAclModule {
         this.name = name == null ? null : name.trim();
     }
 
-    public Integer getParentId() {
-        return parentId;
+    public Integer getAclModuleId() {
+        return aclModuleId;
     }
 
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
+    public void setAclModuleId(Integer aclModuleId) {
+        this.aclModuleId = aclModuleId;
     }
 
-    public String getLever() {
-        return lever;
+    public String getUrl() {
+        return url;
     }
 
-    public void setLever(String lever) {
-        this.lever = lever == null ? null : lever.trim();
+    public void setUrl(String url) {
+        this.url = url == null ? null : url.trim();
     }
 
-    public Integer getSeq() {
-        return seq;
+    public Integer getType() {
+        return type;
     }
 
-    public void setSeq(Integer seq) {
-        this.seq = seq;
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public Integer getStatus() {
@@ -78,6 +90,14 @@ public class SysAclModule {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getSeq() {
+        return seq;
+    }
+
+    public void setSeq(Integer seq) {
+        this.seq = seq;
     }
 
     public String getRemark() {

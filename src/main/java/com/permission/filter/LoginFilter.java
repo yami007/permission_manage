@@ -1,7 +1,7 @@
 package com.permission.filter;
 
 import com.permission.common.RequestHolder;
-import com.permission.dto.SysUser;
+import com.permission.model.SysUser;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.*;

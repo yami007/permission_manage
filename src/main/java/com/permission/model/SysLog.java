@@ -1,17 +1,13 @@
-package com.permission.dto;
+package com.permission.model;
 
 import java.util.Date;
 
-public class SysRole {
+public class SysLog {
     private Integer id;
-
-    private String name;
 
     private Integer type;
 
-    private Integer status;
-
-    private String remark;
+    private Integer targetId;
 
     private String operator;
 
@@ -19,20 +15,14 @@ public class SysRole {
 
     private String operatorIp;
 
+    private Integer status;
+
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
     }
 
     public Integer getType() {
@@ -43,20 +33,12 @@ public class SysRole {
         this.type = type;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Integer getTargetId() {
+        return targetId;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+    public void setTargetId(Integer targetId) {
+        this.targetId = targetId;
     }
 
     public String getOperator() {
@@ -81,5 +63,13 @@ public class SysRole {
 
     public void setOperatorIp(String operatorIp) {
         this.operatorIp = operatorIp == null ? null : operatorIp.trim();
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

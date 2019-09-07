@@ -1,6 +1,6 @@
 package com.permission.dao;
 
-import com.permission.dto.SysDept;
+import com.permission.model.SysDept;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

@@ -1,6 +1,7 @@
 package com.permission.dto;
 
 import com.google.common.collect.Lists;
+import com.permission.model.SysAclModule;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

@@ -1,5 +1,5 @@
 <%@ page import="com.permission.common.RequestHolder" %>
-<%@ page import="com.permission.dto.SysUser" %>
+<%@ page import="com.permission.model.SysUser" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">

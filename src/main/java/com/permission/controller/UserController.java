@@ -1,6 +1,6 @@
 package com.permission.controller;
 
-import com.permission.dto.SysUser;
+import com.permission.model.SysUser;
 import com.permission.service.SysUserService;
 import com.permission.util.MD5Util;
 import org.apache.commons.lang3.StringUtils;
@@ -18,6 +18,7 @@ import java.io.IOException;
  */
 @Controller
 public class UserController {
+
     @Autowired
     private SysUserService sysUserService;
 
