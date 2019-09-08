@@ -29,7 +29,10 @@ public class SysRoleService {
     @Autowired
     private SysUserMapper sysUserMapper;
 
-
+    /**
+     * 保存新增角色
+     * @param param
+     */
     public void save(RoleParam param) {
         BeanValidator.check(param);
         if (checkExist(param.getName(), param.getId())) {
@@ -43,6 +46,10 @@ public class SysRoleService {
         sysRoleMapper.insertSelective(role);
     }
 
+    /**
+     * 更新角色
+     * @param param
+     */
     public void update(RoleParam param) {
         BeanValidator.check(param);
         if (checkExist(param.getName(), param.getId())) {
@@ -59,10 +66,20 @@ public class SysRoleService {
         sysRoleMapper.updateByPrimaryKeySelective(after);
     }
 
+    /**
+     * 获取所有角色列表
+     * @return
+     */
     public List<SysRole> getAll() {
         return sysRoleMapper.getAll();
     }
 
+    /**
+     * 校验是否有相同名字的角色
+     * @param name
+     * @param id
+     * @return
+     */
     private boolean checkExist(String name, Integer id) {
         return sysRoleMapper.countByName(name, id) > 0;
     }

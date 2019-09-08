@@ -33,11 +33,20 @@ public class SysRoleController {
     @Autowired
     private SysRoleAclService sysRoleAclService;
 
+    /**
+     * 跳转角色管理页面
+     * @return
+     */
     @RequestMapping("role.page")
     public ModelAndView page() {
         return new ModelAndView("role");
     }
 
+    /**
+     * 保存角色
+     * @param param
+     * @return
+     */
     @RequestMapping("/save.json")
     @ResponseBody
     public JsonData saveRole(RoleParam param) {
@@ -45,6 +54,11 @@ public class SysRoleController {
         return JsonData.success();
     }
 
+    /**
+     * 更新角色
+     * @param param
+     * @return
+     */
     @RequestMapping("/update.json")
     @ResponseBody
     public JsonData updateRole(RoleParam param) {
@@ -52,6 +66,10 @@ public class SysRoleController {
         return JsonData.success();
     }
 
+    /**
+     * 获取角色列表
+     * @return
+     */
     @RequestMapping("/list.json")
     @ResponseBody
     public JsonData list() {
@@ -59,7 +77,8 @@ public class SysRoleController {
     }
 
     /**
-     * 角色权限树
+     * 获取角色权限树
+     * 角色权限树中只包含有具体权限点的权限模块
      * @param roleId
      * @return
      */
@@ -69,6 +88,12 @@ public class SysRoleController {
         return JsonData.success(sysTreeService.roleTree(roleId));
     }
 
+    /**
+     * 更新角色和权限的关系
+     * @param roleId
+     * @param aclIds
+     * @return
+     */
     @RequestMapping("/changeAcls.json")
     @ResponseBody
     public JsonData changeAcls(@RequestParam("roleId") int roleId, @RequestParam(value = "aclIds", required = false, defaultValue = "") String aclIds) {
