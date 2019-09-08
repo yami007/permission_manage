@@ -31,6 +31,8 @@ public class SysAclModuleService {
     private SysAclModuleMapper sysAclModuleMapper;
     @Autowired
     private SysAclMapper sysAclMapper;
+    @Autowired
+    private SysLogService sysLogService;
 
     /**
      * 保存
@@ -49,6 +51,8 @@ public class SysAclModuleService {
         aclModule.setOperatorIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         aclModule.setOperatorTime(new Date());
         sysAclModuleMapper.insertSelective(aclModule);
+        // 保存日志
+        sysLogService.saveAclModuleLog(null,aclModule);
     }
 
     public void update(AclModuleParam param) {
@@ -66,7 +70,9 @@ public class SysAclModuleService {
         after.setOperatorIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         after.setOperatorTime(new Date());
 
-        updateWithChild(before, after);
+        updateWithChild(before, before);
+        // 保存日志
+        sysLogService.saveAclModuleLog(before,before);
 
     }
 

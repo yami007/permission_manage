@@ -26,6 +26,8 @@ public class SysUserService {
 
     @Autowired
     private SysUserMapper sysUserMapper;
+    @Autowired
+    private SysLogService sysLogService;
 
     /**
      * 新增用户
@@ -52,7 +54,8 @@ public class SysUserService {
         // TODO: sendEmail
 
         sysUserMapper.insertSelective(user);
-//        sysLogService.saveUserLog(null, user);
+        // 保存日志
+        sysLogService.saveUserLog(null, user);
     }
 
     /**
@@ -75,7 +78,8 @@ public class SysUserService {
         after.setOperatorIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         after.setOperatorTime(new Date());
         sysUserMapper.updateByPrimaryKeySelective(after);
-//        sysLogService.saveUserLog(before, after);
+        // 保存日志
+        sysLogService.saveUserLog(before, after);
     }
 
     /**

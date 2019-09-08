@@ -30,6 +30,8 @@ public class SysDeptService {
     private SysDeptMapper sysDeptMapper;
     @Autowired
     private SysUserMapper sysUserMapper;
+    @Autowired
+    private SysLogService sysLogService;
 
     /**
      * 保存部门
@@ -48,6 +50,8 @@ public class SysDeptService {
         sysDept.setOperatorIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         sysDept.setOperatorTime(new Date());
         sysDeptMapper.insertSelective(sysDept);
+        // 保存日志
+        sysLogService.saveDeptLog(null,sysDept);
     }
 
     /**
@@ -71,6 +75,9 @@ public class SysDeptService {
         afterSysDept.setOperatorTime(new Date());
         // 更新本部门及其子部门
         updateWithChild(beforeSysDept, afterSysDept);
+
+        // 保存日志
+        sysLogService.saveDeptLog(beforeSysDept,afterSysDept);
     }
 
     /**
