@@ -33,6 +33,26 @@ public class SysTreeService {
     @Autowired
     private SysAclMapper sysAclMapper;
 
+    // ------------当前用户下的权限树----------------
+
+    /**
+     * 获取当前用户下的权限树
+     *
+     * @param userId
+     * @return
+     */
+    public List<AclModuleLevelDto> userAclTree(int userId) {
+        List<SysAcl> userAclList = sysCoreService.getUserAclList(userId);
+        List<AclDto> aclDtoList = new ArrayList<>();
+        for (SysAcl sysAcl : userAclList) {
+            AclDto adapt = AclDto.adapt(sysAcl);
+            adapt.setHasAcl(true);
+            adapt.setChecked(true);
+            aclDtoList.add(adapt);
+        }
+        return aclListToTree(aclDtoList);
+    }
+
     // ------------角色权限树，包含所有的权限模块及权限树，用户已经应有及角色已经拥有对字段赋值----------------
     public List<AclModuleLevelDto> roleTree(int roleId) {
         // 1、获取当前用户已分配的权限点

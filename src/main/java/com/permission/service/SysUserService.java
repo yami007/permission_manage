@@ -27,6 +27,10 @@ public class SysUserService {
     @Autowired
     private SysUserMapper sysUserMapper;
 
+    /**
+     * 新增用户
+     * @param param
+     */
     public void save(UserParam param) {
         BeanValidator.check(param);
         if (checkTelephoneExist(param.getTelephone(), param.getId())) {
@@ -51,6 +55,10 @@ public class SysUserService {
 //        sysLogService.saveUserLog(null, user);
     }
 
+    /**
+     * 更新用户
+     * @param param
+     */
     public void update(UserParam param) {
         BeanValidator.check(param);
         if (checkTelephoneExist(param.getTelephone(), param.getId())) {
@@ -70,17 +78,41 @@ public class SysUserService {
 //        sysLogService.saveUserLog(before, after);
     }
 
+    /**
+     * 检查邮箱是否重复
+     * @param mail
+     * @param userId
+     * @return
+     */
     public boolean checkEmailExist(String mail, Integer userId) {
         return sysUserMapper.countByMail(mail, userId) > 0;
     }
 
+    /**
+     * 检查手机号是否重复
+     * @param telephone
+     * @param userId
+     * @return
+     */
     public boolean checkTelephoneExist(String telephone, Integer userId) {
         return sysUserMapper.countByTelephone(telephone, userId) > 0;
     }
+
+    /**
+     * 通过登录账号查询用户（手机号或邮箱）
+     * @param keyword
+     * @return
+     */
     public SysUser findByKeyword(String keyword) {
         return sysUserMapper.findByKeyword(keyword);
     }
 
+    /**
+     * 分页查询部门下的用户
+     * @param deptId
+     * @param page
+     * @return
+     */
     public PageResult<SysUser> getPageByDeptId(int deptId, PageQuery page) {
         BeanValidator.check(page);
         int count = sysUserMapper.countByDeptId(deptId);
@@ -90,6 +122,11 @@ public class SysUserService {
         }
         return PageResult.<SysUser>builder().build();
     }
+
+    /**
+     * 获取所有用户
+     * @return
+     */
     public List<SysUser> getAll() {
         return sysUserMapper.getAll();
     }
