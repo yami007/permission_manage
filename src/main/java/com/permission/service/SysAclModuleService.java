@@ -111,7 +111,7 @@ public class SysAclModuleService {
             throw new ParamException("当前模块下面有子模块，无法删除");
         }
         if (sysAclMapper.countByAclModuleId(aclModule.getId()) > 0) {
-            throw new ParamException("当前模块下面有用户，无法删除");
+            throw new ParamException("当前模块下面有权限点，无法删除");
         }
         sysAclModuleMapper.deleteByPrimaryKey(aclModuleId);
     }

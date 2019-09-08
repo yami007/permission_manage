@@ -107,4 +107,22 @@
     SELECT
     s.`role_id` FROM sys_role_user s WHERE s.`user_id` = #{userId,jdbcType=INTEGER}
   </select>
+
+    <select id="getUserIdListByRoleId" parameterType="map" resultType="int">
+        SELECT user_id
+        FROM sys_role_user
+        WHERE role_id = #{roleId}
+    </select>
+    <delete id="deleteByRoleId" parameterType="int">
+        DELETE FROM sys_role_user
+        WHERE role_id = #{roleId}
+    </delete>
+    <select id="getUserIdListByRoleIdList" parameterType="map" resultType="int" >
+        SELECT user_id
+        FROM sys_role_user
+        WHERE role_id IN
+        <foreach collection="roleIdList" item="roleId" open="(" close=")" separator=",">
+            #{roleId}
+        </foreach>
+    </select>
 </mapper>
