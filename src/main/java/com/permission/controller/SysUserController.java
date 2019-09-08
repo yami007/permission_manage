@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
 
@@ -30,8 +31,14 @@ public class SysUserController {
     @Autowired
     private SysRoleService sysRoleService;
 
+    @RequestMapping("/noAuth.page")
+    public ModelAndView noAuth() {
+        return new ModelAndView("noAuth");
+    }
+
     /**
      * 新增用户
+     *
      * @param param
      * @return
      */
@@ -44,6 +51,7 @@ public class SysUserController {
 
     /**
      * 修改用户
+     *
      * @param param
      * @return
      */
@@ -56,6 +64,7 @@ public class SysUserController {
 
     /**
      * 分页查询部门下的用户
+     *
      * @param deptId
      * @param pageQuery
      * @return
