@@ -28,17 +28,21 @@ public class SysDeptController {
     @Autowired
     private SysTreeService sysTreeService;
 
+    /**
+     * 进入部门管理页面
+     *
+     * @return
+     */
     @RequestMapping("/dept.page")
     public ModelAndView page() {
         return new ModelAndView("dept");
     }
-    @RequestMapping("/save.json")
-    @ResponseBody
-    public JsonData saveDept(DeptParam deptParam) {
-        sysDeptService.saveDept(deptParam);
-        return JsonData.success();
-    }
 
+    /**
+     * 部门树
+     *
+     * @return
+     */
     @RequestMapping("/tree.json")
     @ResponseBody
     public JsonData tree() {
@@ -46,6 +50,25 @@ public class SysDeptController {
         return JsonData.success(deptLevelDtos);
     }
 
+    /**
+     * 新增部门
+     *
+     * @param deptParam
+     * @return
+     */
+    @RequestMapping("/save.json")
+    @ResponseBody
+    public JsonData saveDept(DeptParam deptParam) {
+        sysDeptService.saveDept(deptParam);
+        return JsonData.success();
+    }
+
+    /**
+     * 更新部门
+     *
+     * @param deptParam
+     * @return
+     */
     @RequestMapping("/update.json")
     @ResponseBody
     public JsonData updateDept(DeptParam deptParam) {
@@ -53,6 +76,12 @@ public class SysDeptController {
         return JsonData.success();
     }
 
+    /**
+     * 删除部门
+     *
+     * @param id
+     * @return
+     */
     @RequestMapping("/delete.json")
     @ResponseBody
     public JsonData delete(@RequestParam("id") int id) {

@@ -35,6 +35,7 @@ public class SysRoleController {
 
     /**
      * 跳转角色管理页面
+     *
      * @return
      */
     @RequestMapping("role.page")
@@ -44,6 +45,7 @@ public class SysRoleController {
 
     /**
      * 保存角色
+     *
      * @param param
      * @return
      */
@@ -56,6 +58,7 @@ public class SysRoleController {
 
     /**
      * 更新角色
+     *
      * @param param
      * @return
      */
@@ -68,6 +71,7 @@ public class SysRoleController {
 
     /**
      * 获取角色列表
+     *
      * @return
      */
     @RequestMapping("/list.json")
@@ -79,6 +83,7 @@ public class SysRoleController {
     /**
      * 获取角色权限树
      * 角色权限树中只包含有具体权限点的权限模块
+     *
      * @param roleId
      * @return
      */
@@ -89,35 +94,8 @@ public class SysRoleController {
     }
 
     /**
-     * 更新角色和权限的关系
-     * @param roleId
-     * @param aclIds
-     * @return
-     */
-    @RequestMapping("/changeAcls.json")
-    @ResponseBody
-    public JsonData changeAcls(@RequestParam("roleId") int roleId, @RequestParam(value = "aclIds", required = false, defaultValue = "") String aclIds) {
-        List<Integer> aclIdList = StringUtil.splitToListInt(aclIds);
-        sysRoleAclService.changeRoleAcls(roleId, aclIdList);
-        return JsonData.success();
-    }
-
-    /**
-     * 更新用户和角色的关系
-     * @param roleId
-     * @param userIds
-     * @return
-     */
-    @RequestMapping("/changeUsers.json")
-    @ResponseBody
-    public JsonData changeUsers(@RequestParam("roleId") int roleId, @RequestParam(value = "userIds", required = false, defaultValue = "") String userIds) {
-        List<Integer> userIdList = StringUtil.splitToListInt(userIds);
-        sysRoleUserService.changeRoleUsers(roleId, userIdList);
-        return JsonData.success();
-    }
-
-    /**
      * 获取角色用户数据
+     *
      * @param roleId
      * @return
      */
@@ -132,7 +110,7 @@ public class SysRoleController {
         Set<Integer> selectedUserIdSet = selectedUserList.stream().map(sysUser -> sysUser.getId()).collect(Collectors.toSet());
         // 该角色下不存在的用户
         List<SysUser> unselectedUserList = new ArrayList<>();
-        for(SysUser sysUser : allUserList) {
+        for (SysUser sysUser : allUserList) {
             if (sysUser.getStatus() == 1 && !selectedUserIdSet.contains(sysUser.getId())) {
                 unselectedUserList.add(sysUser);
             }
@@ -144,4 +122,35 @@ public class SysRoleController {
         map.put("unselected", unselectedUserList);
         return JsonData.success(map);
     }
+
+    /**
+     * 更新角色和权限的关系
+     *
+     * @param roleId
+     * @param aclIds
+     * @return
+     */
+    @RequestMapping("/changeAcls.json")
+    @ResponseBody
+    public JsonData changeAcls(@RequestParam("roleId") int roleId, @RequestParam(value = "aclIds", required = false, defaultValue = "") String aclIds) {
+        List<Integer> aclIdList = StringUtil.splitToListInt(aclIds);
+        sysRoleAclService.changeRoleAcls(roleId, aclIdList);
+        return JsonData.success();
+    }
+
+    /**
+     * 更新用户和角色的关系
+     *
+     * @param roleId
+     * @param userIds
+     * @return
+     */
+    @RequestMapping("/changeUsers.json")
+    @ResponseBody
+    public JsonData changeUsers(@RequestParam("roleId") int roleId, @RequestParam(value = "userIds", required = false, defaultValue = "") String userIds) {
+        List<Integer> userIdList = StringUtil.splitToListInt(userIds);
+        sysRoleUserService.changeRoleUsers(roleId, userIdList);
+        return JsonData.success();
+    }
+
 }

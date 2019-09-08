@@ -23,12 +23,14 @@ import java.util.Set;
  */
 @Slf4j
 public class permissionFilter implements Filter {
+    // 白名单
     private static Set<String> exclusionUrlSet = new HashSet<>();
-
+    // 无权限访问页面路径
     private final static String noAuthUrl = "/sys/user/noAuth.page";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+        // 初始化时获取白名单
         String exclusionUrls = filterConfig.getInitParameter("exclusionUrls");
         List<String> exclusionUrlList = Splitter.on(",").trimResults().omitEmptyStrings().splitToList(exclusionUrls);
         exclusionUrlSet.addAll(exclusionUrlList);
@@ -39,11 +41,11 @@ public class permissionFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        // 获取url
+        // 获取访问的url
         String servletPath = request.getServletPath();
-        // 获取参数
+        // 获取访问参数
         Map parameterMap = request.getParameterMap();
-        // 判断路径是否在排除校验的路径里
+        // 判断路径是否在白名单中，如果在，则放行
         if (exclusionUrlSet.contains(servletPath)) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
@@ -65,7 +67,7 @@ public class permissionFilter implements Filter {
             noAuth(request, response);
             return;
         }
-        // 有权限，放行
+        // 如果上面都没被拦截，说明有权限，放行
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
@@ -88,7 +90,7 @@ public class permissionFilter implements Filter {
             return;
         }
     }
-
+    // 客户端重定向
     private void clientRedirect(String url, HttpServletResponse response) throws IOException {
         response.setHeader("Content-Type", "text/html");
         response.getWriter().print("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n"

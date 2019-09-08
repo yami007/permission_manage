@@ -31,6 +31,10 @@ public class SysUserController {
     @Autowired
     private SysRoleService sysRoleService;
 
+    /**
+     * 无权限页面
+     * @return
+     */
     @RequestMapping("/noAuth.page")
     public ModelAndView noAuth() {
         return new ModelAndView("noAuth");
@@ -76,6 +80,11 @@ public class SysUserController {
         return JsonData.success(result);
     }
 
+    /**
+     * 查询用户拥有的角色和权限
+     * @param userId
+     * @return
+     */
     @RequestMapping("/acls.json")
     @ResponseBody
     public JsonData acls(@RequestParam("userId") int userId) {

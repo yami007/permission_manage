@@ -22,11 +22,22 @@ public class SysAclModuleController {
     @Autowired
     private SysTreeService sysTreeService;
 
+    /**
+     * 进入权限管理页面
+     *
+     * @return
+     */
     @RequestMapping("/acl.page")
     public ModelAndView page() {
         return new ModelAndView("acl");
     }
 
+    /**
+     * 新增权限模块
+     *
+     * @param param
+     * @return
+     */
     @RequestMapping("/save.json")
     @ResponseBody
     public JsonData saveAclModule(AclModuleParam param) {
@@ -34,6 +45,12 @@ public class SysAclModuleController {
         return JsonData.success();
     }
 
+    /**
+     * 更新权限模块
+     *
+     * @param param
+     * @return
+     */
     @RequestMapping("/update.json")
     @ResponseBody
     public JsonData updateAclModule(AclModuleParam param) {
@@ -41,16 +58,28 @@ public class SysAclModuleController {
         return JsonData.success();
     }
 
-    @RequestMapping("/tree.json")
-    @ResponseBody
-    public JsonData tree() {
-        return JsonData.success(sysTreeService.aclModuleTree());
-    }
-
+    /**
+     * 删除权限模块
+     *
+     * @param id
+     * @return
+     */
     @RequestMapping("/delete.json")
     @ResponseBody
     public JsonData delete(@RequestParam("id") int id) {
         sysAclModuleService.delete(id);
         return JsonData.success();
     }
+
+    /**
+     * 权限模块树查询
+     *
+     * @return
+     */
+    @RequestMapping("/tree.json")
+    @ResponseBody
+    public JsonData tree() {
+        return JsonData.success(sysTreeService.aclModuleTree());
+    }
+
 }

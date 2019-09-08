@@ -27,6 +27,11 @@ public class SysAclController {
     @Autowired
     private SysRoleService sysRoleService;
 
+    /**
+     * 新增权限点
+     * @param param
+     * @return
+     */
     @RequestMapping("/save.json")
     @ResponseBody
     public JsonData saveAclModule(AclParam param) {
@@ -34,6 +39,11 @@ public class SysAclController {
         return JsonData.success();
     }
 
+    /**
+     * 更新权限点
+     * @param param
+     * @return
+     */
     @RequestMapping("/update.json")
     @ResponseBody
     public JsonData updateAclModule(AclParam param) {
@@ -41,12 +51,23 @@ public class SysAclController {
         return JsonData.success();
     }
 
+    /**
+     * 分页查询权限模块下的权限点
+     * @param aclModuleId
+     * @param pageQuery
+     * @return
+     */
     @RequestMapping("/page.json")
     @ResponseBody
     public JsonData list(@RequestParam("aclModuleId") Integer aclModuleId, PageQuery pageQuery) {
         return JsonData.success(sysAclService.getPageByAclModuleId(aclModuleId, pageQuery));
     }
 
+    /**
+     * 查询拥有该权限点的角色和用户
+     * @param aclId
+     * @return
+     */
     @RequestMapping("acls.json")
     @ResponseBody
     public JsonData acls(@RequestParam("aclId") int aclId) {
