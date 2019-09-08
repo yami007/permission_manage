@@ -103,4 +103,22 @@
       operator_ip = #{operatorIp,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="getAclIdListByRoleIdList" parameterType="map" resultType="int">
+    SELECT s.`acl_id`
+      FROM sys_role_acl s
+      WHERE s.`role_id` IN
+      <foreach collection="userRoleIdList" item="roleId" open="(" close=")" separator=",">
+        #{roleId}
+      </foreach>
+  </select>
+  <delete id="deleteByRoleId" parameterType="int">
+    DELETE FROM sys_role_acl
+    WHERE role_id = #{roleId}
+  </delete>
+
+  <select id="getRoleIdListByAclId" parameterType="int" resultType="int">
+    SELECT role_id
+    FROM sys_role_acl
+    WHERE acl_id = #{aclId}
+  </select>
 </mapper>

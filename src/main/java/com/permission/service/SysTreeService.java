@@ -2,10 +2,13 @@ package com.permission.service;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import com.permission.dao.SysAclMapper;
 import com.permission.dao.SysAclModuleMapper;
 import com.permission.dao.SysDeptMapper;
+import com.permission.dto.AclDto;
 import com.permission.dto.AclModuleLevelDto;
 import com.permission.dto.DeptLevelDto;
+import com.permission.model.SysAcl;
 import com.permission.model.SysAclModule;
 import com.permission.model.SysDept;
 import com.permission.util.LeverUtil;
@@ -14,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 递归树业务类
@@ -24,6 +28,75 @@ public class SysTreeService {
     private SysDeptMapper sysDeptMapper;
     @Autowired
     private SysAclModuleMapper sysAclModuleMapper;
+    @Autowired
+    private SysCoreService sysCoreService;
+    @Autowired
+    private SysAclMapper sysAclMapper;
+
+    // ------------角色权限树，包含所有的权限模块及权限树，用户已经应有及角色已经拥有对字段赋值----------------
+    public List<AclModuleLevelDto> roleTree(int roleId) {
+        // 1、获取当前用户已分配的权限点
+        List<SysAcl> currentUserAclList = sysCoreService.getCurrentUserAclList();
+        // 2、获取所选角色当前分配的权限点
+        List<SysAcl> roleAclList = sysCoreService.getRoleAclList(roleId);
+        // 3、将当前用户的权限id及角色的权限点id取出来
+        Set<Integer> userAclIdSet = currentUserAclList.stream().map(sysAcl -> sysAcl.getId()).collect(Collectors.toSet());
+        Set<Integer> roleAclIdSet = roleAclList.stream().map(sysAcl -> sysAcl.getId()).collect(Collectors.toSet());
+        // 4、获取所有权限点
+        List<SysAcl> aclList = sysAclMapper.getAll();
+        Set<SysAcl> aclSet = new HashSet<>(aclList);
+        // 5、将权限点赋值并转换成AclDto
+        List<AclDto> aclDtoList = new ArrayList<>();
+        for (SysAcl sysAcl : aclSet) {
+            AclDto aclDto = AclDto.adapt(sysAcl);
+            // 判断当前用户是否有这个权限
+            if (userAclIdSet.contains(sysAcl.getId())) {
+                aclDto.setHasAcl(true);
+            }
+            // 判断当前角色是否有这个权限
+            if (roleAclIdSet.contains(sysAcl.getId())) {
+                aclDto.setChecked(true);
+            }
+            aclDtoList.add(aclDto);
+        }
+        // 6、转换成权限模块树
+        return aclListToTree(aclDtoList);
+    }
+
+    // 将权限点绑定到权限模块树上
+    public List<AclModuleLevelDto> aclListToTree(List<AclDto> aclDtoList) {
+        if (CollectionUtils.isEmpty(aclDtoList)) {
+            return new ArrayList<>();
+        }
+        // 查出所有权限模块树
+        List<AclModuleLevelDto> aclModuleTree = aclModuleTree();
+        // 将权限点转成权限点map
+        Multimap<Integer, AclDto> aclDtoMultimap = ArrayListMultimap.create();
+        for (AclDto aclDto : aclDtoList) {
+            if (aclDto.getStatus() == 1) {
+                aclDtoMultimap.put(aclDto.getAclModuleId(), aclDto);
+            }
+        }
+        // 将权限点绑定到权限模块树上
+        bindAclsWithMoudke(aclModuleTree, aclDtoMultimap);
+        return aclModuleTree;
+    }
+
+    // 将权限点绑定到权限模块树上
+    public void bindAclsWithMoudke(List<AclModuleLevelDto> aclModuleTree, Multimap<Integer, AclDto> aclDtoMultimap) {
+        if (CollectionUtils.isEmpty(aclModuleTree)) {
+            return;
+        }
+        // 将权限点放置到对应的权限模块下
+        for (AclModuleLevelDto aclModuleLevelDto : aclModuleTree) {
+            List<AclDto> aclDtos = (List<AclDto>) aclDtoMultimap.get(aclModuleLevelDto.getId());
+            if (CollectionUtils.isNotEmpty(aclDtos)) {
+                Collections.sort(aclDtos, aclSeqComparator);
+                aclModuleLevelDto.setAclList(aclDtos);
+            }
+            bindAclsWithMoudke(aclModuleLevelDto.getAclModuleList(), aclDtoMultimap);
+        }
+    }
 
     // ------------部门树处理----------------
     // 查询出所有的部门
@@ -151,4 +224,11 @@ public class SysTreeService {
             return o1.getSeq() - o2.getSeq();
         }
     };
+    // 权限点排序方法
+    public Comparator<AclDto> aclSeqComparator = new Comparator<AclDto>() {
+        public int compare(AclDto o1, AclDto o2) {
+            return o1.getSeq() - o2.getSeq();
+        }
+    };
+
 }
